@@ -1,0 +1,11 @@
+ENV BOOST_VERSION 1.55.0
+ENV BOOST_DIST boost_${BOOST_VERSION}.tar.gz
+
+# prepare boost
+RUN DIST_VER=`echo ${BOOST_VERSION} | sed 's/\./_/g'`    && \
+  wget https://sourceforge.net/projects/boost/files/boost/${BOOST_VERSION}/boost_$DIST_VER.tar.gz/download -O ${BOOST_DIST} && \
+  tar -zxvf ${BOOST_DIST} -C /tmp                        && \
+  cd /tmp/boost_$DIST_VER                                && \
+  ./bootstrap.sh                                         && \
+  ./b2 install                                           && \
+  cd ..; rm -rf boost_$DIST_VER

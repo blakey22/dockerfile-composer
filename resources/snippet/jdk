@@ -1,0 +1,18 @@
+# setup build env
+ENV JDK_VERSION 8u111-b14
+ENV JDK_DIST jdk-${JDK_VERSION}-linux-x64.rpm
+ENV MAVEN_VERSION 3.3.9
+ENV MAVEN_DIST apache-maven-${MAVEN_VERSION}-bin.tar.gz
+
+# prepare JDK
+RUN VER=`echo "${JDK_VERSION}" | cut -d '-' -f 1` && \
+  wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/${JDK_VERSION}/jdk-$VER-linux-x64.rpm -O ${JDK_DIST} && \
+  chmod +x ${JDK_DIST}                            && \
+  rpm -ivh ${JDK_DIST}                            && \
+  rm ${JDK_DIST}
+
+# prepare MAVEN
+RUN wget http://www-us.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O ${MAVEN_DIST} && \
+  tar -zxvf ${MAVEN_DIST} -C /usr/local/          && \
+  rm ${MAVEN_DIST}                                && \
+  echo "export PATH=$PATH:/usr/local/apache-maven-${MAVEN_VERSION}/bin" >> /root/.bash_profile

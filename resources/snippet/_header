@@ -1,0 +1,19 @@
+FROM centos:6.7
+MAINTAINER "Dockerfile Composer"
+
+ENV ROOT_PASSWORD "RootPasswd"
+
+# install base packages
+RUN yum install -y openssh-server which vim tar passwd git wget
+
+# prepare SSH service
+COPY resources/prerequisite/gen_ssh_keys.sh /tmp
+RUN /tmp/gen_ssh_keys.sh                          && \
+  rm /tmp/gen_ssh_keys.sh                         && \
+  sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+  echo 'root:${ROOT_PASSWORD}' | chpasswd
+
+# prepare Env
+RUN echo "export LC_ALL=en_US.UTF-8" >> /root/.bash_profile   && \
+  echo "export LANG=en_US.UTF-8" >> /root/.bash_profile       && \
+  echo "export LANGUAGE=en_US.UTF-8" >> /root/.bash_profile

@@ -1,0 +1,14 @@
+ENV LIBEVENT_VERSION 2.0.22
+ENV LIBEVENT_DIST libevent-${LIBEVENT_VERSION}-stable.tar.gz
+
+# prepare libevent
+RUN wget https://github.com/libevent/libevent/releases/download/release-${LIBEVENT_VERSION}-stable/libevent-${LIBEVENT_VERSION}-stable.tar.gz -O ${LIBEVENT_DIST} && \
+  tar -zxvf ${LIBEVENT_DIST} -C /tmp            && \
+  rm ${LIBEVENT_DIST}                           && \
+  cd /tmp/libevent-${LIBEVENT_VERSION}-stable   && \
+  ./configure                                   && \
+  make                                          && \
+  make install                                  && \
+  make clean                                    && \
+  cd ..                                         && \
+  rm -rf libevent-${LIBEVENT_VERSION}-stable;
