@@ -18,7 +18,7 @@ For part 2 and 3, the services or software might be varied based on different im
 
 Clone git repository
 ```
-
+https://github.com/blakey22/dockerfile-composer.git
 ```
 
 Help
